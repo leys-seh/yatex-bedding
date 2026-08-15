@@ -3,13 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/lib/products";
 
+
 export const revalidate = 3600;
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function ProductDetailPage(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+) {
+  const params = await props.params;
   const product = await getProductBySlug(params.slug);
 
   if (!product) return notFound();

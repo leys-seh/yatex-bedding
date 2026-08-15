@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useMemo, useLayoutEffect } from "react";
 import Image from "next/image";
@@ -59,7 +59,7 @@ export default function AboutScrollAnimation() {
             const currentItems = gsap.utils.toArray<HTMLElement>(gallery.children);
             if (!currentItems.length) return;
 
-            flipCtx && flipCtx.revert();
+            if (flipCtx) flipCtx.revert();
             gallery.classList.remove("yatex-gallery--final");
 
             flipCtx = gsap.context(() => {
@@ -134,7 +134,7 @@ export default function AboutScrollAnimation() {
           createTween();
 
           resizeHandler = () => {
-            ScrollTrigger.getAll().forEach((st: any) => {
+            ScrollTrigger.getAll().forEach((st) => {
               if (st.trigger === section || st.trigger === gallery) st.kill();
             });
             createTween();
@@ -151,7 +151,7 @@ export default function AboutScrollAnimation() {
       return () => {
         if (resizeHandler) window.removeEventListener("resize", resizeHandler);
         if (ctx) ctx.revert();
-        ScrollTrigger.getAll().forEach((st: any) => {
+        ScrollTrigger.getAll().forEach((st) => {
           if (st.trigger === section || st.trigger === gallery) st.kill();
         });
       };
@@ -177,17 +177,17 @@ export default function AboutScrollAnimation() {
               <h2 className="about-text-item font-display text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink leading-[1.1] mb-8">
                 Sadece bir yatak
                 <br />
-                değil.
+                deÄŸil.
               </h2>
               <div className="space-y-6 text-ink/75 leading-relaxed font-body">
                 <p className="about-text-item">
-                  İyi uykunun tasarlandığı bir deneyim. Yatex Bedding olarak,
-                  her parça titizlikle seçilmiş malzemeler ve uzman el işçiliği
-                  ile üretilir.
+                  Ä°yi uykunun tasarlandÄ±ÄŸÄ± bir deneyim. Yatex Bedding olarak,
+                  her parÃ§a titizlikle seÃ§ilmiÅŸ malzemeler ve uzman el iÅŸÃ§iliÄŸi
+                  ile Ã¼retilir.
                 </p>
                 <p className="about-text-item">
-                  Amacımız, size sadece bir yatak değil; dinlenme, iyileşme ve
-                  yenilenme için mükemmel bir alan sunmak.
+                  AmacÄ±mÄ±z, size sadece bir yatak deÄŸil; dinlenme, iyileÅŸme ve
+                  yenilenme iÃ§in mÃ¼kemmel bir alan sunmak.
                 </p>
               </div>
             </div>

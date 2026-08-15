@@ -2,13 +2,16 @@ import Link from "next/link";
 import { getAllProducts, getProductsByCategory, CATEGORIES } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 
+
+
 export const revalidate = 3600;
 
-export default async function UrunlerPage({
-  searchParams,
-}: {
-  searchParams: { kategori?: string };
-}) {
+export default async function UrunlerPage(
+  props: {
+    searchParams: Promise<{ kategori?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const activeCategory = searchParams.kategori;
   const products = activeCategory
     ? await getProductsByCategory(activeCategory)

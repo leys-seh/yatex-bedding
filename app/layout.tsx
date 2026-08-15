@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+
+
 const display = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["500", "600", "700"],

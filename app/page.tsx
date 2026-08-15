@@ -6,6 +6,8 @@ import Hero from "@/components/Hero";
 import ScrollReveal from "@/components/ScrollReveal";
 import AboutScrollAnimation from "@/components/AboutScrollAnimation";
 
+
+
 export const revalidate = 3600;
 
 export default async function HomePage() {

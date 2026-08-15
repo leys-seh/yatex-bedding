@@ -1,3 +1,5 @@
+
+
 export default function HakkimizdaPage() {
   return (
     <section className="min-h-screen bg-navy">

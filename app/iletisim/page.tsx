@@ -1,3 +1,4 @@
+
 export default function IletisimPage() {
   return (
     <section className="min-h-screen bg-navy">
