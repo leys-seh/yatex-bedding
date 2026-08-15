@@ -1,0 +1,1 @@
+The website is now running at http://localhost:3000 with all branding updated to Yatex Bedding. All changes have been successfully implemented and verified.
