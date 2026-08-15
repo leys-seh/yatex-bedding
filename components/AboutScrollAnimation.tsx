@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useMemo, useLayoutEffect } from "react";
 import Image from "next/image";
@@ -177,17 +177,17 @@ export default function AboutScrollAnimation() {
               <h2 className="about-text-item font-display text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink leading-[1.1] mb-8">
                 Sadece bir yatak
                 <br />
-                deÄŸil.
+                değil.
               </h2>
               <div className="space-y-6 text-ink/75 leading-relaxed font-body">
                 <p className="about-text-item">
-                  Ä°yi uykunun tasarlandÄ±ÄŸÄ± bir deneyim. Yatex Bedding olarak,
-                  her parÃ§a titizlikle seÃ§ilmiÅŸ malzemeler ve uzman el iÅŸÃ§iliÄŸi
-                  ile Ã¼retilir.
+                  İyi uykunun tasarlandığı bir deneyim. Yatex Bedding olarak,
+                  her parça titizlikle seçilmiş malzemeler ve uzman el işçiliği
+                  ile üretilir.
                 </p>
                 <p className="about-text-item">
-                  AmacÄ±mÄ±z, size sadece bir yatak deÄŸil; dinlenme, iyileÅŸme ve
-                  yenilenme iÃ§in mÃ¼kemmel bir alan sunmak.
+                  Amacımız, size sadece bir yatak değil; dinlenme, iyileşme ve
+                  yenilenme için mükemmel bir alan sunmak.
                 </p>
               </div>
             </div>
