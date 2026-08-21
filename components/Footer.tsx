@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const SHOWROOM_MAP_URL =
+  "https://www.google.com/maps/place//data=!4m2!3m1!1s0x14caa55c4b8fa691:0xf28f93688c2728bb?sa=X&ved=1t:8290&ictx=111";
+
 export default function Footer() {
   return (
     <footer className="border-t border-ink/10 bg-navy-dark py-10 text-ink sm:py-16 lg:py-20">
@@ -21,7 +24,7 @@ export default function Footer() {
                 className="pointer-events-none absolute left-1/2 top-1/2 h-[8.5rem] w-[8.5rem] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
               />
             </Link>
-            <p className="text-sm text-ink/60 font-body max-w-sm leading-relaxed">
+            <p className="max-w-sm text-sm leading-relaxed text-ink/60 font-body">
               İyi Uykunun Zarif Hali.
             </p>
           </div>
@@ -32,11 +35,23 @@ export default function Footer() {
             </p>
             <ul className="space-y-2 text-sm text-ink/70 sm:space-y-3 font-body">
               <li>
-                <Link
-                  href="/urunler?kategori=yatak-odasi"
-                  className="hover:text-gold-soft transition-colors"
-                >
-                  Yatak Odası
+                <Link href="/urunler?kategori=yatak-seti" className="transition-colors hover:text-gold-soft">
+                  Yatak Seti
+                </Link>
+              </li>
+              <li>
+                <Link href="/urunler?kategori=yatak" className="transition-colors hover:text-gold-soft">
+                  Yatak
+                </Link>
+              </li>
+              <li>
+                <Link href="/urunler?kategori=baza" className="transition-colors hover:text-gold-soft">
+                  Baza
+                </Link>
+              </li>
+              <li>
+                <Link href="/urunler?kategori=baslik" className="transition-colors hover:text-gold-soft">
+                  Başlık
                 </Link>
               </li>
             </ul>
@@ -47,13 +62,23 @@ export default function Footer() {
               İletişim
             </p>
             <ul className="space-y-2 break-words text-sm text-ink/70 sm:space-y-3 font-body">
-              <li>Showroom: Konya, Türkiye</li>
-              <li>Telefon: +90 5xx xxx xx xx</li>
               <li>
                 <a
-                  href="mailto:info@yatexbedding.com"
-                  className="hover:text-gold-soft transition-colors"
+                  href={SHOWROOM_MAP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-gold-soft"
                 >
+                  Çobançeşme, Sanayi Cd. Acar Sanayi Sitesi No:70 Zemin Kat, 34530 Bahçelievler / İstanbul
+                </a>
+              </li>
+              <li>
+                <a href="tel:+905426515951" className="transition-colors hover:text-gold-soft">
+                  0542 651 59 51
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@yatexbedding.com" className="transition-colors hover:text-gold-soft">
                   info@yatexbedding.com
                 </a>
               </li>
@@ -63,26 +88,17 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-3 border-t border-ink/10 pt-6 text-center sm:flex-row sm:gap-4 sm:pt-8 sm:text-left">
           <p className="text-xs text-ink/40 font-body">
-            © {new Date().getFullYear()} Yatex Bedding. Tüm hakları saklıdır.
+            © 2026 Yatex Bedding. Tüm hakları saklıdır.
           </p>
 
           <div className="flex gap-6">
-            <Link
-              href="/"
-              className="text-xs text-ink/40 hover:text-gold-soft transition-colors font-body"
-            >
+            <Link href="/" className="text-xs text-ink/40 transition-colors hover:text-gold-soft font-body">
               Ana Sayfa
             </Link>
-            <Link
-              href="/hakkimizda"
-              className="text-xs text-ink/40 hover:text-gold-soft transition-colors font-body"
-            >
+            <Link href="/hakkimizda" className="text-xs text-ink/40 transition-colors hover:text-gold-soft font-body">
               Hakkımızda
             </Link>
-            <Link
-              href="/iletisim"
-              className="text-xs text-ink/40 hover:text-gold-soft transition-colors font-body"
-            >
+            <Link href="/iletisim" className="text-xs text-ink/40 transition-colors hover:text-gold-soft font-body">
               İletişim
             </Link>
           </div>
