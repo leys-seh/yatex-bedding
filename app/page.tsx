@@ -167,47 +167,6 @@ export default async function HomePage() {
       {/* About / Brand Section */}
       <AboutScrollAnimation />
 
-      {/* How It Works */}
-      <ScrollReveal>
-        <section className="bg-navy-light py-12 text-ink sm:py-24 lg:py-32">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-            <div className="reveal mb-8 text-center sm:mb-20">
-              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
-                Süreç
-              </p>
-              <h2 className="font-display text-3xl font-semibold sm:text-4xl lg:text-5xl">
-                Nasıl Çalışıyoruz?
-              </h2>
-            </div>
-
-            <div className="reveal grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-              {[
-                { num: "01", title: "Keşfet", desc: "Koleksiyonumuzu inceleyin" },
-                { num: "02", title: "İncele", desc: "Detaylı bilgi alın" },
-                { num: "03", title: "Bize Ulaşın", desc: "Sorularınızı sorun" },
-                { num: "04", title: "Bulalım", desc: "Size uygun modeli seçelim" },
-              ].map((step, index) => (
-                <div
-                  key={step.num}
-                  className="reveal text-center lg:text-left"
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                >
-                  <p className="mb-2 font-display text-4xl font-semibold text-gold-soft/30 sm:mb-4 sm:text-5xl lg:text-6xl">
-                    {step.num}
-                  </p>
-                  <h3 className="mb-2 font-display text-xl font-semibold sm:mb-3 sm:text-2xl">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs leading-relaxed text-ink/60 sm:text-sm font-body">
-                    {step.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
-
       {/* Quality / Manufacturing Story */}
       <ScrollReveal>
         <section className="bg-navy py-12 sm:py-24 lg:py-32">
