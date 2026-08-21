@@ -47,13 +47,9 @@ export default function Hero() {
             <h1
               className="animate-on-load mb-4 font-display text-[clamp(2.5rem,11vw,3rem)] font-semibold leading-[0.95] text-balance text-ink opacity-0 sm:mb-6 sm:text-[clamp(3.5rem,5vw,5.375rem)]"
             >
-              Daha iyi bir
+              Kaliteli uyku,
               <br />
-              uyku için
-              <br />
-              tasarlanmış
-              <br />
-              yataklar.
+              kaliteli yatak.
             </h1>
 
             <p
