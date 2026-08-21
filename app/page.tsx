@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getFeaturedProducts } from "@/lib/products";
-import { CATEGORIES } from "@/lib/products";
+import Image from "next/image";
+import { getAllProducts } from "@/lib/products";
+import { CATALOG_URL } from "@/lib/catalog";
 import ProductCard from "@/components/ProductCard";
 import Hero from "@/components/Hero";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -10,90 +11,151 @@ import AboutScrollAnimation from "@/components/AboutScrollAnimation";
 
 export const revalidate = 3600;
 
+const CATALOG_PREVIEWS = [
+  {
+    src: "/assets/catalog/catalog-preview-1.webp",
+    alt: "YATEX katalog görünümü 1",
+    width: 1448,
+    height: 1086,
+  },
+  {
+    src: "/assets/catalog/catalog-preview-2.webp",
+    alt: "YATEX katalog görünümü 2",
+    width: 1448,
+    height: 1086,
+  },
+  {
+    src: "/assets/catalog/catalog-preview-3-lidya.webp",
+    alt: "YATEX katalog görünümü 3",
+    width: 1448,
+    height: 1086,
+  },
+  {
+    src: "/assets/catalog/catalog-preview-4.webp",
+    alt: "YATEX katalog görünümü 4",
+    width: 1448,
+    height: 1086,
+  },
+];
+
 export default async function HomePage() {
-  const featured = await getFeaturedProducts();
+  const products = await getAllProducts();
+  const productsWithImages = products.filter((product) =>
+    product.images?.some(
+      (image) => typeof image === "string" && image.trim().length > 0,
+    ),
+  );
+  // Prefer products selected as featured when they have an image. The current
+  // catalogue has no such records, so its real-image products remain visible.
+  const carouselProducts = productsWithImages.filter((product) => product.featured);
+  const visibleProducts =
+    carouselProducts.length > 0 ? carouselProducts : productsWithImages;
+  // A set contains at least six rendered cards, keeping wide screens covered
+  // even when the source collection is small. This never changes product data.
+  const marqueeProducts = Array.from(
+    {
+      length:
+        visibleProducts.length > 0
+          ? Math.max(1, Math.ceil(6 / visibleProducts.length))
+          : 0,
+    },
+    () => visibleProducts,
+  ).flat();
 
   return (
     <>
       <Hero />
 
-      {/* Categories / Collections */}
+      {/* Catalog previews */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-navy">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <div className="reveal text-center mb-16">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-4 font-body">
-                Koleksiyonlar
+        <section className="bg-navy py-12 sm:py-16 md:py-20 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+            <div className="reveal mb-8 text-center sm:mb-10 lg:mb-12">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
+                Kataloğumuz
               </p>
-              <h2 className="font-display text-4xl lg:text-5xl font-semibold text-ink">
-                Yatak Koleksiyonları
+              <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl">
+                Kataloglarımız
               </h2>
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-ink/70 sm:text-base font-body">
+                YATEX koleksiyonlarını ve tasarımlarını kataloğumuzda keşfedin.
+              </p>
             </div>
 
-            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {CATEGORIES.map((cat, index) => (
-                <Link
-                  key={cat.slug}
-                  href={`/urunler?kategori=${cat.slug}`}
-                  className="group relative overflow-hidden bg-navy-light aspect-[3/4] flex flex-col justify-end p-8 transition-all duration-500 hover:shadow-2xl border border-ink/10"
-                  style={{ transitionDelay: `${index * 100}ms` }}
+            <div className="reveal grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8">
+              {CATALOG_PREVIEWS.map((preview) => (
+                <div
+                  key={preview.src}
+                  className="group overflow-hidden rounded-sm border border-ink/10 bg-navy-light/30"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-light/90 via-navy-light/60 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-
-                  <div className="relative z-10">
-                    <h3 className="font-display text-2xl lg:text-3xl font-semibold text-ink mb-2 group-hover:translate-x-2 transition-transform duration-500">
-                      {cat.label}
-                    </h3>
-                    <div className="flex items-center gap-2 text-gold-soft opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="text-xs uppercase tracking-widest2 font-body">
-                        Keşfet
-                      </span>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div className="absolute inset-0 bg-gold/5 group-hover:bg-transparent transition-colors duration-500" />
-                </Link>
+                  <Image
+                    src={preview.src}
+                    alt={preview.alt}
+                    width={preview.width}
+                    height={preview.height}
+                    sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2rem), 50vw"
+                    className="h-auto w-full object-contain transition duration-700 ease-out group-hover:scale-[1.02] group-hover:brightness-105"
+                  />
+                </div>
               ))}
+            </div>
+
+            <div className="reveal mt-8 flex justify-center sm:mt-10">
+              <a
+                href={CATALOG_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YATEX kataloğunu yeni sekmede incele"
+                className="group inline-flex h-14 w-full items-center justify-center gap-3 border border-gold-soft bg-navy-light/30 px-8 text-xs uppercase tracking-[0.2em] text-gold-soft transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-soft hover:text-navy sm:w-auto sm:px-10 sm:text-sm"
+              >
+                Kataloğu İncele
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14m-5-5 5 5-5 5" />
+                </svg>
+              </a>
             </div>
           </div>
         </section>
       </ScrollReveal>
 
       {/* Featured Products */}
-      {featured.length > 0 && (
+      {visibleProducts.length > 0 && (
         <ScrollReveal>
-          <section className="py-24 lg:py-32 bg-navy-dark">
-            <div className="mx-auto max-w-7xl px-6 lg:px-10">
-              <div className="reveal text-center mb-16">
-                <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-4 font-body">
+          <section className="bg-navy-dark py-12 sm:py-16 md:py-20 lg:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+              <div className="reveal mb-8 text-center sm:mb-10 lg:mb-12">
+                <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
                   Öne Çıkan
                 </p>
-                <h2 className="font-display text-4xl lg:text-5xl font-semibold text-ink">
+                <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl">
                   Öne Çıkan Modeller
                 </h2>
               </div>
 
-              <div className="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 items-start">
-                {featured.map((product, index) => (
+            </div>
+
+            <div className="yatex-featured-marquee-viewport" aria-label="Öne çıkan ürünler">
+              <div className="yatex-featured-marquee-track">
+                {[0, 1].map((setIndex) => (
                   <div
-                    key={product.id}
-                    className="reveal"
-                    style={{ transitionDelay: `${index * 100}ms` }}
+                    key={setIndex}
+                    className="yatex-featured-marquee-group"
+                    aria-hidden={setIndex === 1}
                   >
-                    <ProductCard product={product} />
+                    {marqueeProducts.map((product, index) => (
+                      <div
+                        key={`${setIndex}-${product.id}-${index}`}
+                        className="yatex-featured-marquee-card"
+                      >
+                        <ProductCard product={product} compact />
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -107,18 +169,18 @@ export default async function HomePage() {
 
       {/* How It Works */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-navy-light text-ink">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <div className="reveal text-center mb-20">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-4 font-body">
+        <section className="bg-navy-light py-12 text-ink sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+            <div className="reveal mb-8 text-center sm:mb-20">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
                 Süreç
               </p>
-              <h2 className="font-display text-4xl lg:text-5xl font-semibold">
+              <h2 className="font-display text-3xl font-semibold sm:text-4xl lg:text-5xl">
                 Nasıl Çalışıyoruz?
               </h2>
             </div>
 
-            <div className="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+            <div className="reveal grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {[
                 { num: "01", title: "Keşfet", desc: "Koleksiyonumuzu inceleyin" },
                 { num: "02", title: "İncele", desc: "Detaylı bilgi alın" },
@@ -130,13 +192,13 @@ export default async function HomePage() {
                   className="reveal text-center lg:text-left"
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  <p className="font-display text-5xl lg:text-6xl font-semibold text-gold-soft/30 mb-4">
+                  <p className="mb-2 font-display text-4xl font-semibold text-gold-soft/30 sm:mb-4 sm:text-5xl lg:text-6xl">
                     {step.num}
                   </p>
-                  <h3 className="font-display text-2xl font-semibold mb-3">
+                  <h3 className="mb-2 font-display text-xl font-semibold sm:mb-3 sm:text-2xl">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-ink/60 font-body leading-relaxed">
+                  <p className="text-xs leading-relaxed text-ink/60 sm:text-sm font-body">
                     {step.desc}
                   </p>
                 </div>
@@ -148,18 +210,18 @@ export default async function HomePage() {
 
       {/* Quality / Manufacturing Story */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-navy">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <div className="reveal text-center mb-16">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-4 font-body">
+        <section className="bg-navy py-12 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+            <div className="reveal mb-8 text-center sm:mb-16">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
                 Kalite
               </p>
-              <h2 className="font-display text-4xl lg:text-5xl font-semibold text-ink">
+              <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl">
                 Kalitenin Arkasındaki Detaylar
               </h2>
             </div>
 
-            <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div className="reveal grid grid-cols-1 gap-3 sm:gap-8 md:grid-cols-3 lg:gap-12">
               {[
                 {
                   title: "Malzeme",
@@ -176,16 +238,16 @@ export default async function HomePage() {
               ].map((item, index) => (
                 <div
                   key={item.title}
-                  className="reveal text-center p-8 bg-navy-light/50 border border-ink/10"
+                  className="reveal border border-ink/10 bg-navy-light/50 p-5 text-center sm:p-8"
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <div className="w-16 h-16 mx-auto mb-6 border border-gold-soft/40 rounded-full flex items-center justify-center">
-                    <div className="w-8 h-8 bg-gold-soft/10 rounded-full" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-gold-soft/40 sm:mb-6 sm:h-16 sm:w-16">
+                    <div className="h-6 w-6 rounded-full bg-gold-soft/10 sm:h-8 sm:w-8" />
                   </div>
-                  <h3 className="font-display text-xl font-semibold text-ink mb-3">
+                  <h3 className="mb-2 font-display text-lg font-semibold text-ink sm:mb-3 sm:text-xl">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-ink/60 font-body leading-relaxed">
+                  <p className="text-xs leading-relaxed text-ink/60 sm:text-sm font-body">
                     {item.desc}
                   </p>
                 </div>
@@ -197,32 +259,32 @@ export default async function HomePage() {
 
       {/* CTA Section */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-navy-light/30">
-          <div className="mx-auto max-w-4xl px-6 lg:px-10 text-center">
+        <section className="bg-navy-light/30 py-12 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-10">
             <div className="reveal">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-6 font-body">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-6 font-body">
                 İletişim
               </p>
-              <h2 className="font-display text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink leading-[1.1] mb-8">
+              <h2 className="mb-5 font-display text-3xl font-semibold leading-[1.1] text-ink sm:mb-8 sm:text-4xl lg:text-5xl xl:text-6xl">
                 Size uygun yatağı
                 <br />
                 birlikte bulalım.
               </h2>
-              <p className="text-ink/70 font-body mb-12 max-w-xl mx-auto">
+              <p className="mx-auto mb-6 max-w-xl text-sm text-ink/70 sm:mb-12 sm:text-base font-body">
                 Ürünlerimiz hakkında detaylı bilgi ve size özel öneriler için
                 bizimle iletişime geçin.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                 <Link
                   href="/iletisim"
-                  className="inline-flex items-center gap-3 border border-gold-soft bg-gold-soft px-8 py-4 text-sm uppercase tracking-[0.2em] text-navy transition-all duration-300 hover:bg-gold hover:border-gold"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 border border-gold-soft bg-gold-soft px-4 py-3.5 text-xs uppercase tracking-[0.15em] text-navy transition-all duration-300 hover:border-gold hover:bg-gold sm:w-auto sm:gap-3 sm:px-8 sm:py-4 sm:text-sm sm:tracking-[0.2em]"
                 >
                   İletişime Geç
                 </Link>
                 <Link
                   href="/urunler"
-                  className="inline-flex items-center gap-3 border border-ink/30 px-8 py-4 text-sm uppercase tracking-[0.2em] text-ink transition-all duration-300 hover:border-ink hover:bg-ink/5"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 border border-ink/30 px-4 py-3.5 text-xs uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:border-ink hover:bg-ink/5 sm:w-auto sm:gap-3 sm:px-8 sm:py-4 sm:text-sm sm:tracking-[0.2em]"
                 >
                   Ürünleri İncele
                 </Link>

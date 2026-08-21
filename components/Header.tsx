@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { CATALOG_URL } from "@/lib/catalog";
 
 const NAV = [
   { href: "/", label: "Ana Sayfa" },
@@ -30,14 +32,21 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10 py-5">
-        <Link href="/" className="group flex items-baseline gap-2">
-          <span className="font-display text-2xl lg:text-3xl font-semibold tracking-wide text-ink">
-            Yatex
-          </span>
-          <span className="font-body text-[11px] uppercase tracking-widest2 text-gold-soft">
-            Bedding
-          </span>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 sm:py-5 lg:px-10">
+        <Link
+          href="/"
+          aria-label="Yatex Bedding ana sayfa"
+          className="relative block h-8 w-24 shrink-0 lg:h-9 lg:w-28"
+        >
+          <Image
+            src="/assets/yatex-logo.png"
+            alt="Yatex Bedding"
+            width={2000}
+            height={2000}
+            priority
+            sizes="(max-width: 1023px) 136px, 152px"
+            className="pointer-events-none absolute left-1/2 top-1/2 -mt-px h-[8.5rem] w-[8.5rem] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain lg:h-[9.5rem] lg:w-[9.5rem]"
+          />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10">
@@ -53,17 +62,19 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Link
-            href="/urunler"
+          <a
+            href={CATALOG_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-body text-[13px] uppercase tracking-[0.15em] border border-gold-soft text-gold-soft px-6 py-2.5 transition-all duration-300 hover:bg-gold-soft hover:text-navy"
           >
-            Koleksiyonu Keşfet
-          </Link>
+            2026 Katalog
+          </a>
         </div>
 
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden flex flex-col gap-1.5 p-2 group"
+          className="group flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 p-2 lg:hidden"
           aria-label="Toggle menu"
         >
           <span
@@ -86,24 +97,26 @@ export default function Header() {
 
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-navy/98 backdrop-blur-md border-t border-gold-soft/30">
-          <nav className="flex flex-col items-center gap-6 py-10">
+          <nav className="flex flex-col items-center gap-5 py-6 sm:gap-6 sm:py-10">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="font-display text-2xl font-semibold text-ink hover:text-gold-soft transition-colors"
+                className="font-display text-xl font-semibold text-ink transition-colors hover:text-gold-soft sm:text-2xl"
               >
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/urunler"
+            <a
+              href={CATALOG_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 font-body text-sm uppercase tracking-widest2 border border-gold-soft text-gold-soft px-8 py-3 hover:bg-gold-soft hover:text-navy transition-all"
+              className="mt-2 border border-gold-soft px-6 py-3 font-body text-xs uppercase tracking-widest2 text-gold-soft transition-all hover:bg-gold-soft hover:text-navy sm:mt-4 sm:px-8 sm:text-sm"
             >
-              Koleksiyonu Keşfet
-            </Link>
+              2026 Katalog
+            </a>
           </nav>
         </div>
       )}

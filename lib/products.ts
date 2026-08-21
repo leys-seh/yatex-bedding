@@ -28,7 +28,31 @@ export async function getFeaturedProducts(): Promise<Product[]> {
   return data ?? [];
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
+export type ProductCategorySlug =
+  | "yatak-seti"
+  | "yatak"
+  | "baza"
+  | "baslik";
+
+export const PRODUCT_CATEGORIES = [
+  { slug: "yatak-seti", label: "Yatak Seti" },
+  { slug: "yatak", label: "Yatak" },
+  { slug: "baza", label: "Baza" },
+  { slug: "baslik", label: "Başlık" },
+] as const satisfies ReadonlyArray<{
+  slug: ProductCategorySlug;
+  label: string;
+}>;
+
+export function isProductCategorySlug(
+  category: string | undefined,
+): category is ProductCategorySlug {
+  return PRODUCT_CATEGORIES.some((item) => item.slug === category);
+}
+
+export async function getProductsByCategory(
+  category: ProductCategorySlug,
+): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -55,11 +79,3 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
   return data;
 }
-
-export const CATEGORIES = [
-  { slug: "yatak-odasi", label: "Bed" },
-  { slug: "oturma-grubu", label: "Seating" },
-  { slug: "yemek-odasi", label: "Dining" },
-  { slug: "genc-odasi", label: "Youth" },
-  { slug: "ofis", label: "Office" },
-];

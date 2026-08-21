@@ -239,3 +239,99 @@ textarea:focus-visible {
 .product-card:hover .product-card__line {
   transform: scaleX(1);
 }
+
+/* Featured products: two equal groups make the track loop seamlessly. */
+.yatex-featured-marquee-viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 0.5rem 0 1rem;
+}
+
+.yatex-featured-marquee-track {
+  display: flex;
+  align-items: flex-start;
+  width: max-content;
+  flex-shrink: 0;
+  will-change: transform;
+  animation-name: yatexFeaturedMarquee;
+  animation-duration: 32s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+.yatex-featured-marquee-group {
+  display: flex;
+  align-items: flex-start;
+  flex: none;
+  gap: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.yatex-featured-marquee-card {
+  width: clamp(14.5rem, 72vw, 18rem);
+  flex: none;
+  padding: 0.25rem;
+}
+
+.yatex-featured-marquee-card .product-card {
+  max-width: none;
+  transition: transform 350ms ease, box-shadow 350ms ease;
+}
+
+@keyframes yatexFeaturedMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .yatex-featured-marquee-card .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+  }
+}
+
+@media (min-width: 640px) {
+  .yatex-featured-marquee-viewport {
+    padding-bottom: 1.5rem;
+  }
+
+  .yatex-featured-marquee-group {
+    gap: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .yatex-featured-marquee-card {
+    width: clamp(18rem, 42vw, 24rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .yatex-featured-marquee-group {
+    gap: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .yatex-featured-marquee-card {
+    width: clamp(19rem, 25vw, 25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yatex-featured-marquee-track {
+    animation-duration: 80s !important;
+    animation-iteration-count: infinite !important;
+    animation-play-state: running !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .product-card {
+    border-radius: 10px;
+  }
+}

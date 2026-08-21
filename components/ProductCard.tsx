@@ -2,7 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/lib/supabase";
 
-export default function ProductCard({ product }: { product: Product }) {
+type ProductCardProps = {
+  product: Product;
+  compact?: boolean;
+};
+
+export default function ProductCard({
+  product,
+  compact = false,
+}: ProductCardProps) {
   const image = product.images?.[0];
 
   return (
@@ -10,14 +18,18 @@ export default function ProductCard({ product }: { product: Product }) {
       href={`/urunler/${product.slug}`}
       className="product-card group block"
     >
-      <div className="product-card__imgBx relative aspect-[4/5] overflow-hidden bg-navy">
+      <div className="product-card__imgBx relative aspect-[4/3] overflow-hidden">
         {image ? (
           <Image
             src={image}
             alt={product.name}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="product-card__img object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            sizes={
+              compact
+                ? "(max-width: 639px) 33vw, (max-width: 1023px) 50vw, 33vw"
+                : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            }
+            className="product-card__img object-contain"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-navy/80">
@@ -32,7 +44,11 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
 
-        <div className="absolute top-1.5 left-1.5 bg-navy/70 backdrop-blur-sm border border-gold/40 px-1.5 py-0.5 text-[8px] sm:text-[9px] uppercase tracking-widest2 text-gold-soft font-body z-10">
+        <div
+          className={`absolute top-1.5 left-1.5 z-10 border border-gold/40 bg-navy/70 px-1.5 py-0.5 font-body text-[8px] uppercase tracking-widest2 text-gold-soft backdrop-blur-sm sm:text-[9px] ${
+            compact ? "hidden sm:block" : ""
+          }`}
+        >
           {product.category.replace("-", " ")}
         </div>
 
@@ -40,7 +56,11 @@ export default function ProductCard({ product }: { product: Product }) {
 
         <div className="absolute inset-3 border border-gold/0 group-hover:border-gold/60 transition-colors duration-500 z-10" />
 
-        <div className="product-card__cta absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+        <div
+          className={`product-card__cta absolute bottom-0 left-0 right-0 translate-y-full p-4 transition-transform duration-500 ease-out group-hover:translate-y-0 ${
+            compact ? "hidden sm:block" : ""
+          }`}
+        >
           <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink font-body">
             Detayları İncele
             <svg
@@ -60,10 +80,20 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="product-card__content p-2 lg:p-4 relative bg-navy-light/50 border border-ink/10 border-t-0">
+      <div
+        className={`product-card__content relative min-h-[3.5rem] border border-t-0 border-ink/10 bg-navy-light/50 sm:min-h-[4.75rem] ${
+          compact ? "p-1.5 sm:p-2 lg:p-4" : "p-2 lg:p-4"
+        }`}
+      >
         <div className="product-card__line absolute top-0 left-0 w-full h-px bg-gradient-to-r from-gold to-gold-soft transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
         
-        <h3 className="font-display text-sm lg:text-lg font-semibold text-ink mb-1 lg:mb-2 group-hover:text-gold-soft transition-colors duration-300">
+        <h3
+          className={`font-display font-semibold text-ink transition-colors duration-300 group-hover:text-gold-soft ${
+            compact
+              ? "mb-0.5 line-clamp-2 min-h-7 break-words text-[11px] leading-tight sm:mb-1 sm:min-h-10 sm:text-sm lg:mb-2 lg:min-h-[3.25rem] lg:line-clamp-none lg:text-lg"
+              : "mb-1 text-sm lg:mb-2 lg:text-lg"
+          }`}
+        >
           {product.name}
         </h3>
         {product.material && (

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ProductGallery from "@/components/ProductGallery";
+import WhatsAppProductButton from "@/components/WhatsAppProductButton";
 import { getProductBySlug } from "@/lib/products";
-
 
 export const revalidate = 3600;
 
@@ -16,17 +16,17 @@ export default async function ProductDetailPage(
 
   if (!product) return notFound();
 
-  const image = product.images?.[0];
+  const hasSpecifications = Boolean(product.material || product.dimensions);
 
   return (
     <section className="min-h-screen bg-navy">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-20 sm:px-6 sm:pb-12 sm:pt-24 lg:px-10 lg:pb-6 lg:pt-24">
         <Link
           href="/urunler"
-          className="inline-flex items-center gap-2 text-sm uppercase tracking-wide text-gold-soft hover:text-gold transition-colors mb-12 font-body"
+          className="mb-4 inline-flex items-center gap-2 text-sm uppercase tracking-wide text-gold-soft transition-colors hover:text-gold sm:mb-8 lg:mb-6 font-body"
         >
           <svg
-            className="w-4 h-4"
+            className="h-4 w-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -41,80 +41,51 @@ export default async function ProductDetailPage(
           Ürünlere Dön
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          <div className="relative aspect-[4/5] overflow-hidden bg-navy-light">
-            {image ? (
-              <Image
-                src={image}
-                alt={product.name}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center font-display text-lg text-ink/40">
-                Görsel Yakında
-              </div>
-            )}
-          </div>
+        <div className="grid gap-3 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-12 xl:gap-16">
+          <ProductGallery images={product.images ?? []} productName={product.name} />
 
           <div className="flex flex-col justify-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-gold-soft mb-4 font-body">
+            <p className="mb-2 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 lg:mb-3 font-body">
               {product.category.replace("-", " ")}
             </p>
-            <h1 className="font-display text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink leading-[1.1] mb-6">
+            <h1 className="mb-3 font-display text-3xl font-semibold leading-[1.1] text-ink sm:mb-6 sm:text-4xl lg:mb-4 lg:text-5xl xl:text-6xl">
               {product.name}
             </h1>
 
             {product.description && (
-              <p className="text-lg text-ink/75 leading-relaxed mb-8 font-body">
+              <p className="mb-5 text-base leading-relaxed text-ink/75 sm:mb-8 sm:text-lg lg:mb-5 font-body">
                 {product.description}
               </p>
             )}
 
-            <div className="space-y-4 border-t border-gold-soft/40 pt-8 mb-10">
+            <div
+              className={`mb-5 space-y-1 border-t border-gold-soft/40 pt-4 sm:mb-10 sm:space-y-4 sm:pt-8 lg:mb-6 lg:space-y-2 lg:pt-5 ${
+                hasSpecifications ? "" : "hidden sm:block"
+              }`}
+            >
               {product.material && (
-                <div className="flex justify-between items-center py-3 border-b border-gold-soft/20">
+                <div className="flex items-center justify-between border-b border-gold-soft/20 py-2.5 sm:py-3 lg:py-2.5">
                   <span className="text-sm text-ink/50 uppercase tracking-widest2 font-body">
                     Malzeme
                   </span>
-                  <span className="text-sm text-ink font-body">
+                  <span className="text-right text-sm text-ink font-body">
                     {product.material}
                   </span>
                 </div>
               )}
               {product.dimensions && (
-                <div className="flex justify-between items-center py-3 border-b border-gold-soft/20">
+                <div className="flex items-center justify-between border-b border-gold-soft/20 py-2.5 sm:py-3 lg:py-2.5">
                   <span className="text-sm text-ink/50 uppercase tracking-widest2 font-body">
                     Ölçüler
                   </span>
-                  <span className="text-sm text-ink font-body">
+                  <span className="text-right text-sm text-ink font-body">
                     {product.dimensions}
                   </span>
                 </div>
               )}
             </div>
 
-            <Link
-              href="/iletisim"
-              className="inline-flex items-center justify-center gap-3 border border-gold-soft bg-gold-soft px-8 py-4 text-sm uppercase tracking-[0.2em] text-navy transition-all duration-300 hover:bg-gold hover:border-gold w-full sm:w-auto"
-            >
-              Ürün Hakkında Bilgi Al
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </Link>
+            <WhatsAppProductButton productName={product.name} />
           </div>
         </div>
       </div>

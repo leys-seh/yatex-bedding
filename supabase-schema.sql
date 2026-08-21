@@ -18,14 +18,14 @@ create policy "Herkes kategorileri görebilir"
   on public.categories for select
   using (true);
 
--- Seed categories
+-- Public YATEX categories for all future product entries.
+-- "Tümü" is a UI-only filter and is intentionally not stored here.
 insert into public.categories (slug, label)
 values
-  ('yatak-odasi', 'Bed'),
-  ('oturma-grubu', 'Seating'),
-  ('yemek-odasi', 'Dining'),
-  ('genc-odasi', 'Youth'),
-  ('ofis', 'Office')
+  ('yatak-seti', 'Yatak Seti'),
+  ('yatak', 'Yatak'),
+  ('baza', 'Baza'),
+  ('baslik', 'Başlık')
 on conflict (slug) do nothing;
 
 -- ============================================
@@ -89,50 +89,8 @@ create policy "Herkes ürünleri görebilir"
   on public.products for select
   using (true);
 
--- Seed products (use local image paths)
-insert into public.products (slug, name, description, category, images, featured, material, dimensions)
-values
-  (
-    'osmanli-yatak-odasi-takimi',
-    'Osmanlı Yatak Odası Takımı',
-    'El oyması detaylarla süslenmiş, ceviz ağacından üretilmiş klasik yatak odası takımı.',
-    'yatak-odasi',
-    array['/assets/products/osmanliyatakodasi.webp'],
-    true,
-    'Ceviz Ağacı',
-    '180x200 cm'
-  ),
-  (
-    'saray-oturma-grubu',
-    'Saray Oturma Grubu',
-    'Kadife kumaş ve altın varak detaylarla zarafeti bir araya getiren oturma grubu.',
-    'oturma-grubu',
-    array['/assets/products/sarayyatakodasi.webp'],
-    true,
-    'Kadife / Masif Ahşap',
-    '3+2+1 Takım'
-  ),
-  (
-    'istanbul-yatak-odasi',
-    'İstanbul Yatak Odası',
-    'Modern tasarım ve şehir havasını yansıtan yatak odası koleksiyonu.',
-    'yatak-odasi',
-    array['/assets/products/istanbul-yatak-odasi.webp'],
-    false,
-    'Melamin / Mobilya Levhası',
-    '160x200 cm'
-  ),
-  (
-    'kosovo-yatak-odasi',
-    'Kosovo Yatak Odası',
-    'Sade ve zarif detaylarla öne çıkan yatak odası seti.',
-    'yatak-odasi',
-    array['/assets/products/kosovo-yatak-odasi.webp'],
-    false,
-    'MDF / Lazer kapaklı',
-    '180x200 cm'
-  )
-on conflict (slug) do nothing;
+-- No products are seeded. The catalog intentionally starts empty until
+-- the real YATEX product records are added in the next stage.
 
 -- ============================================
 -- 3. INQUIRIES (Contact Form)

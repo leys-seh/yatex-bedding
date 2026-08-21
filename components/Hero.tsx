@@ -22,7 +22,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-navy text-ink"
+      className="relative flex min-h-[40rem] items-center overflow-hidden bg-navy text-ink sm:min-h-screen"
     >
       {/* Background image */}
       <Image
@@ -38,20 +38,14 @@ export default function Hero() {
 
       {/* Content positioned in the empty left area */}
       <div className="relative z-10 w-full">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-32 lg:py-40">
-          <div
-            className="max-w-xl lg:max-w-2xl"
-            style={{ marginLeft: "5%" }}
-          >
-            <p className="animate-on-load opacity-0 text-xs uppercase tracking-[0.3em] text-gold-soft mb-6 font-body">
+        <div className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 sm:py-32 lg:px-10 lg:py-40">
+          <div className="max-w-xl sm:ml-[5%] lg:max-w-2xl">
+            <p className="animate-on-load mb-4 text-xs uppercase tracking-[0.3em] text-gold-soft opacity-0 sm:mb-6 font-body">
               Premium Sleep
             </p>
 
             <h1
-              className="animate-on-load opacity-0 font-display font-semibold leading-[0.95] text-balance mb-6 text-ink"
-              style={{
-                fontSize: "clamp(56px, 5vw, 86px)",
-              }}
+              className="animate-on-load mb-4 font-display text-[clamp(2.5rem,11vw,3rem)] font-semibold leading-[0.95] text-balance text-ink opacity-0 sm:mb-6 sm:text-[clamp(3.5rem,5vw,5.375rem)]"
             >
               Daha iyi bir
               <br />
@@ -63,7 +57,7 @@ export default function Hero() {
             </h1>
 
             <p
-              className="animate-on-load opacity-0 text-base lg:text-lg text-ink/75 leading-relaxed mb-8 font-body"
+              className="animate-on-load mb-6 text-sm leading-relaxed text-ink/75 opacity-0 sm:mb-8 sm:text-base lg:text-lg font-body"
               style={{ maxWidth: "500px" }}
             >
               İyi uykunun tasarlandığı bir deneyim. Yatex Bedding olarak, her gece
@@ -71,10 +65,10 @@ export default function Hero() {
               koleksiyonumuzu sunuyoruz.
             </p>
 
-            <div className="animate-on-load opacity-0 flex flex-col sm:flex-row gap-4">
+            <div className="animate-on-load flex flex-col gap-3 opacity-0 sm:flex-row sm:gap-4">
               <Link
                 href="/urunler"
-                className="inline-flex items-center justify-center gap-3 border border-gold-soft px-8 py-4 text-sm uppercase tracking-[0.2em] text-gold-soft transition-all duration-300 hover:bg-gold-soft hover:text-navy group"
+                className="group inline-flex min-h-11 items-center justify-center gap-2 border border-gold-soft px-4 py-3.5 text-xs uppercase tracking-[0.15em] text-gold-soft transition-all duration-300 hover:bg-gold-soft hover:text-navy sm:gap-3 sm:px-8 sm:py-4 sm:text-sm sm:tracking-[0.2em]"
               >
                 Koleksiyonu Keşfet
                 <svg
@@ -93,7 +87,7 @@ export default function Hero() {
               </Link>
               <Link
                 href="/iletisim"
-                className="inline-flex items-center justify-center gap-3 border border-ink/30 px-8 py-4 text-sm uppercase tracking-[0.2em] text-ink/90 transition-all duration-300 hover:bg-ink/10 hover:border-ink/50"
+                className="inline-flex min-h-11 items-center justify-center gap-2 border border-ink/30 px-4 py-3.5 text-xs uppercase tracking-[0.15em] text-ink/90 transition-all duration-300 hover:border-ink/50 hover:bg-ink/10 sm:gap-3 sm:px-8 sm:py-4 sm:text-sm sm:tracking-[0.2em]"
               >
                 Bizimle İletişime Geç
               </Link>
@@ -103,7 +97,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce z-10">
+      <div className="absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce sm:block">
         <div className="w-px h-16 bg-gradient-to-b from-transparent via-gold-soft to-transparent opacity-60" />
       </div>
     </section>
