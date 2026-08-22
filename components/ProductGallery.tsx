@@ -2,16 +2,21 @@
 
 import Image from "next/image";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 type ProductGalleryProps = {
   images: string[];
   productName: string;
+  locale: Locale;
 };
 
 export default function ProductGallery({
   images,
   productName,
+  locale,
 }: ProductGalleryProps) {
+  const dictionary = getDictionary(locale);
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeImage = images[activeIndex];
@@ -43,7 +48,7 @@ export default function ProductGallery({
   if (!activeImage) {
     return (
       <div className="flex aspect-[4/3] items-center justify-center bg-navy-light font-display text-lg text-ink/40 lg:h-[calc(100vh-10.5rem)] lg:max-h-[46rem] lg:aspect-auto">
-        Görsel Yakında
+        {dictionary.product.unavailable}
       </div>
     );
   }
@@ -64,14 +69,14 @@ export default function ProductGallery({
       {images.length > 1 && (
         <div
           className="flex items-center gap-2 sm:gap-3"
-          aria-label={`${productName} görsel galerisi`}
+          aria-label={dictionary.product.gallery.replace("{name}", productName)}
           onKeyDown={handleGalleryKeyDown}
           tabIndex={0}
         >
           <button
             type="button"
             onClick={() => selectImage(activeIndex - 1)}
-            aria-label="Önceki görsel"
+            aria-label={dictionary.product.previous}
             className="flex min-h-11 min-w-11 shrink-0 items-center justify-center border border-gold-soft/70 text-gold-soft transition-colors duration-200 hover:bg-gold-soft hover:text-navy"
           >
             <svg aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +96,7 @@ export default function ProductGallery({
                   }}
                   type="button"
                   onClick={() => selectImage(index)}
-                  aria-label={`${productName} görsel ${index + 1}`}
+                  aria-label={`${productName} ${dictionary.product.image} ${index + 1}`}
                   aria-pressed={isActive}
                   className={`relative h-16 w-20 shrink-0 overflow-hidden border transition-colors duration-200 sm:h-20 sm:w-28 ${
                     isActive
@@ -114,7 +119,7 @@ export default function ProductGallery({
           <button
             type="button"
             onClick={() => selectImage(activeIndex + 1)}
-            aria-label="Sonraki görsel"
+            aria-label={dictionary.product.next}
             className="flex min-h-11 min-w-11 shrink-0 items-center justify-center border border-gold-soft/70 text-gold-soft transition-colors duration-200 hover:bg-gold-soft hover:text-navy"
           >
             <svg aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

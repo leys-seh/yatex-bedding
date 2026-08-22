@@ -1,21 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Product } from "@/lib/supabase";
 
 type ProductCardProps = {
   product: Product;
   compact?: boolean;
+  locale?: Locale;
 };
 
 export default function ProductCard({
   product,
   compact = false,
+  locale,
 }: ProductCardProps) {
+  const dictionary = getDictionary(locale ?? defaultLocale);
   const image = product.images?.[0];
+  const categoryLabels: Record<string, string> = {
+    "yatak-seti": dictionary.categories.yatakSeti,
+    yatak: dictionary.categories.yatak,
+    baza: dictionary.categories.baza,
+    baslik: dictionary.categories.baslik,
+  };
 
   return (
     <Link
-      href={`/urunler/${product.slug}`}
+      href={locale ? `/${locale}/urunler/${product.slug}` : `/urunler/${product.slug}`}
       className="product-card group block"
     >
       <div className="product-card__imgBx relative aspect-[4/3] overflow-hidden">
@@ -39,7 +50,7 @@ export default function ProductCard({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <p className="font-display text-sm text-ink/50">Görsel Yakında</p>
+              <p className="font-display text-sm text-ink/50">{dictionary.product.unavailable}</p>
             </div>
           </div>
         )}
@@ -49,7 +60,7 @@ export default function ProductCard({
             compact ? "hidden sm:block" : ""
           }`}
         >
-          {product.category.replace("-", " ")}
+          {categoryLabels[product.category] ?? product.category.replace("-", " ")}
         </div>
 
         <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -62,7 +73,7 @@ export default function ProductCard({
           }`}
         >
           <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-ink font-body">
-            Detayları İncele
+            {dictionary.product.details}
             <svg
               className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
               fill="none"

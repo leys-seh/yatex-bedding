@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductGallery from "@/components/ProductGallery";
 import WhatsAppProductButton from "@/components/WhatsAppProductButton";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getProductBySlug } from "@/lib/products";
 
 export const revalidate = 3600;
@@ -9,20 +11,29 @@ export const revalidate = 3600;
 export default async function ProductDetailPage(
   props: {
     params: Promise<{ slug: string }>;
+    locale?: Locale;
   }
 ) {
   const params = await props.params;
+  const locale = props.locale ?? defaultLocale;
+  const dictionary = getDictionary(locale);
   const product = await getProductBySlug(params.slug);
 
   if (!product) return notFound();
 
   const hasSpecifications = Boolean(product.material || product.dimensions);
+  const categoryLabels: Record<string, string> = {
+    "yatak-seti": dictionary.categories.yatakSeti,
+    yatak: dictionary.categories.yatak,
+    baza: dictionary.categories.baza,
+    baslik: dictionary.categories.baslik,
+  };
 
   return (
     <section className="min-h-screen bg-navy">
       <div className="mx-auto max-w-7xl px-4 pb-10 pt-20 sm:px-6 sm:pb-12 sm:pt-24 lg:px-10 lg:pb-6 lg:pt-24">
         <Link
-          href="/urunler"
+          href={`/${locale}/urunler`}
           className="mb-4 inline-flex items-center gap-2 text-sm uppercase tracking-wide text-gold-soft transition-colors hover:text-gold sm:mb-8 lg:mb-6 font-body"
         >
           <svg
@@ -38,15 +49,15 @@ export default async function ProductDetailPage(
               d="M7 16l-4-4m0 0l4-4m-4 4h18"
             />
           </svg>
-          Ürünlere Dön
+          {dictionary.common.backToProducts}
         </Link>
 
         <div className="grid gap-3 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-12 xl:gap-16">
-          <ProductGallery images={product.images ?? []} productName={product.name} />
+          <ProductGallery images={product.images ?? []} productName={product.name} locale={locale} />
 
           <div className="flex flex-col justify-center">
             <p className="mb-2 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 lg:mb-3 font-body">
-              {product.category.replace("-", " ")}
+              {categoryLabels[product.category] ?? product.category.replace("-", " ")}
             </p>
             <h1 className="mb-3 font-display text-3xl font-semibold leading-[1.1] text-ink sm:mb-6 sm:text-4xl lg:mb-4 lg:text-5xl xl:text-6xl">
               {product.name}
@@ -66,7 +77,7 @@ export default async function ProductDetailPage(
               {product.material && (
                 <div className="flex items-center justify-between border-b border-gold-soft/20 py-2.5 sm:py-3 lg:py-2.5">
                   <span className="text-sm text-ink/50 uppercase tracking-widest2 font-body">
-                    Malzeme
+                    {dictionary.common.material}
                   </span>
                   <span className="text-right text-sm text-ink font-body">
                     {product.material}
@@ -76,7 +87,7 @@ export default async function ProductDetailPage(
               {product.dimensions && (
                 <div className="flex items-center justify-between border-b border-gold-soft/20 py-2.5 sm:py-3 lg:py-2.5">
                   <span className="text-sm text-ink/50 uppercase tracking-widest2 font-body">
-                    Ölçüler
+                    {dictionary.common.dimensions}
                   </span>
                   <span className="text-right text-sm text-ink font-body">
                     {product.dimensions}
@@ -85,7 +96,7 @@ export default async function ProductDetailPage(
               )}
             </div>
 
-            <WhatsAppProductButton productName={product.name} />
+            <WhatsAppProductButton productName={product.name} locale={locale} />
           </div>
         </div>
       </div>

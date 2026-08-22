@@ -1,15 +1,18 @@
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
+export default function HakkimizdaPage({ locale = defaultLocale }: { locale?: Locale }) {
+  const dictionary = getDictionary(locale);
 
-export default function HakkimizdaPage() {
   return (
     <section className="min-h-screen bg-navy">
       <div className="mx-auto max-w-7xl px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-24 lg:px-10 lg:pb-24 lg:pt-28">
         <div className="text-center sm:mb-16">
           <p className="mb-2 text-xs uppercase tracking-[0.3em] text-gold-soft sm:mb-4 font-body">
-            Hikayemiz
+            {dictionary.about.eyebrow}
           </p>
           <h1 className="font-display text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl">
-            Hakkımızda
+            {dictionary.about.title}
           </h1>
         </div>
 
@@ -18,18 +21,13 @@ export default function HakkimizdaPage() {
         <div className="grid gap-10 sm:gap-16 lg:grid-cols-2 lg:gap-24">
           <div className="space-y-4 leading-relaxed text-ink/80 sm:space-y-6 font-body">
             <p className="text-base sm:text-lg">
-              Yatex Bedding, kaliteli ve konforlu yataklar için tasarlanmış
-              premium koleksiyonlarıyla hizmet verir. Her ürün, müşteri
-              memnuniyetini ön planda tutan bir anlayışla üretilir.
+              {dictionary.about.first}
             </p>
             <p>
-              Konya&apos;da showroom&apos;umuzda geniş ürün yelpazemizi
-              sergiliyoruz. Uzman ekibimizle birlikte, ihtiyacınıza en uygun
-              yatağı birlikte bulabiliriz.
+              {dictionary.about.second}
             </p>
             <p>
-              Amacımız, her müşterimize en iyi uyku deneyimini sunmak ve
-              yataklarımızla evlerinize konfor katmak.
+              {dictionary.about.third}
             </p>
           </div>
 
@@ -39,7 +37,7 @@ export default function HakkimizdaPage() {
                 30+
               </p>
               <p className="text-[10px] leading-tight uppercase tracking-[0.15em] text-gold-soft sm:text-sm sm:tracking-widest2 font-body">
-                Yıllık Deneyim
+                {dictionary.about.experience}
               </p>
             </div>
 
@@ -48,7 +46,7 @@ export default function HakkimizdaPage() {
                 500+
               </p>
               <p className="text-[10px] leading-tight uppercase tracking-[0.15em] text-gold-soft sm:text-sm sm:tracking-widest2 font-body">
-                Mutlu Müşteri
+                {dictionary.about.customers}
               </p>
             </div>
 
@@ -57,7 +55,7 @@ export default function HakkimizdaPage() {
                 50+
               </p>
               <p className="text-[10px] leading-tight uppercase tracking-[0.15em] text-gold-soft sm:text-sm sm:tracking-widest2 font-body">
-                Ürün Çeşidi
+                {dictionary.about.variety}
               </p>
             </div>
           </div>
